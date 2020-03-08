@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"log"
-	"github.com/vansikagupta/go-chat-server-websockets/pkg/websockets"
+	ws "github.com/vansikagupta/go-chat-server-websockets/pkg/websockets"
 )
 
 func serveHome(w http.ResponseWriter, r *http.Request){
@@ -12,12 +12,12 @@ func serveHome(w http.ResponseWriter, r *http.Request){
 }
 
 func serveWs(w http.ResponseWriter, r *http.Request){
-	conn, err := websocket.Upgrade(w, r)
+	conn, err := ws.Upgrade(w, r)
 	if err != nil{
 		log.Println(err)
 	}
 
-	websocket.Reader(conn)
+	ws.Reader(conn)
 }
 
 func setUpRoutes(){
