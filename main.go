@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"log"
-	"github.com/vansikagupta/go-chat-server-websockets/pkg/websocket"
+	"github.com/vansikagupta/go-chat-server-websockets/pkg/websockets"
 )
 
 func serveHome(w http.ResponseWriter, r *http.Request){

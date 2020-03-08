@@ -1,4 +1,4 @@
-package websocket
+package websockets
 
 import (
 	"fmt"
@@ -45,5 +45,7 @@ func Reader(conn *websocket.Conn){
 	}
 }
 
-
+func Test(){
+	fmt.Println("Test")
+}
 
