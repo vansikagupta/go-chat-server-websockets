@@ -31,7 +31,7 @@ func (pool *Pool) Start(){
 			fmt.Println("No of clients connected : ", len(pool.Clients))
 			//broadcast "New user joined" message to all clients
 			for client, _ := range pool.Clients{
-				fmt.Println(client)
+				fmt.Println(client.ID)
 				client.Conn.WriteMessage(1, []byte("New User joined..."))
 			}
 
@@ -40,15 +40,16 @@ func (pool *Pool) Start(){
 			fmt.Println("No of clients connected : ", len(pool.Clients))
 			//broadcast "User disconnected" message to all clients
 			for client, _ := range pool.Clients{
-				fmt.Println(client)
+				fmt.Println(client.ID)
 				client.Conn.WriteMessage(1, []byte("User disconnected"))
 			}
 
 		case message := <-pool.Broadcast:
 			fmt.Println("Sending message to all connected clients")
 			for client, _ := range pool.Clients{
-				fmt.Println(client)
-				if err := client.Conn.WriteMessage(message.Type, []byte(message.Body)); err != nil{
+				fmt.Println(client.ID)
+				msg := message.Body + " From: "+ message.ClientID
+				if err := client.Conn.WriteMessage(message.Type, []byte(msg)); err != nil{
 					log.Println(err)
                     return
 				}

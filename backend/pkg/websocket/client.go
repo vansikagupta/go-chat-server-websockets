@@ -13,6 +13,7 @@ type Client struct{
 }
 
 type Message struct{
+	ClientID string
 	Type int   //binary or text
     Body string 
 }
@@ -34,7 +35,7 @@ func (c *Client) Read(){
 		}
 
 		//write the message back to the connection pool
-		message := Message{Type: msgType, Body: string(p)}
+		message := Message{ClientID: c.ID, Type: msgType, Body: string(p)}
         c.Pool.Broadcast <- message
         fmt.Printf("Message Received: %+v\n", message)
 	}

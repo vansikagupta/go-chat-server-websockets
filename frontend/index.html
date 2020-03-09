@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Go WebSocket Tutorial</title>
+  </head>
+  <body>
+    <h2>Hello World</h2>
+
+    <script>
+        var socket;
+
+        function onStartClick(){
+          var username = document.getElementById("username").value;
+          var url = "ws://127.0.0.1:9000/ws?username="+username;
+          socket = new WebSocket(url);
+          console.log("Attempting Connection...");
+
+          socket.onopen = () => {
+            console.log("Successfully Connected");
+            socket.send("Hi From the Client!")
+        };
+
+        socket.onmessage = msg => {
+          console.log(msg);
+        };
+
+        
+        socket.onclose = event => {
+            console.log("Socket Closed Connection: ", event);
+            socket.send("Client Closed!")
+        };
+
+        socket.onerror = error => {
+            console.log("Socket Error: ", error);
+        };
+        }
+
+        
+
+        function onSendClick(){
+            var msg = document.getElementById("message").value;
+            socket.send(msg);
+            document.getElementById("message").value = "";
+        };
+
+    </script>
+
+    <!--Username Input-->
+    <table>
+      <tr>
+          <td width="200px">Username</td>
+          <td><input type="text" id="username"/></td>
+      </tr>
+      <tr>
+          <td></td>
+          <td>
+              <input id="btnUsername" type="button" value="Send Username" onclick="onStartClick()">
+          </td>
+      </tr>
+    </table><br/>
+
+<!--Message Input-->
+    <table>
+      <tr>
+          <td width="200px">Message</td>
+          <td><input type="text" id="message"/></td>
+      </tr>
+      <tr>
+          <td></td>
+          <td>
+              <input id="btnSend" type="button" value="Send Message" onclick="onSendClick()">
+          </td>
+      </tr>
+  </table><br/>
+  </body>
+</html> 
