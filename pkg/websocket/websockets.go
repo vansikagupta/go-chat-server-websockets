@@ -1,10 +1,12 @@
-package websockets
+package websocket
 
 import (
 	"fmt"
 	"net/http"
 	"log"
 	"github.com/gorilla/websocket"
+	"bufio"
+	"os"
 )
 //to upgrade HTTP endpoint to websocket endpoint
 var upgrader = websocket.Upgrader{
@@ -13,7 +15,7 @@ var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool { return true },
 }
 
-func Upgrader(w http.ResponseWriter, r *http.Request) (*websocket.Conn, error){
+func Upgrade(w http.ResponseWriter, r *http.Request) (*websocket.Conn, error){
 	//returns a websocket connection
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -45,7 +47,19 @@ func Reader(conn *websocket.Conn){
 	}
 }
 
-func Test(){
-	fmt.Println("Test")
+func Writer(conn *websocket.Conn){
+	scanner := bufio.NewScanner(os.Stdin)
+	
+	for scanner.Scan(){
+		text := scanner.Text()
+		fmt.Println(text)
+
+		//write the message back to the same connection
+		if err := conn.WriteMessage(websocket.TextMessage, []byte(text)); err != nil {
+			log.Println(err)
+			return
+		}
+	}
 }
+
 
